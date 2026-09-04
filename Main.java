@@ -2,21 +2,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.function.Supplier;
 
-/**
- * Authentic Assessment in OOPROG - Midterm Project
- * Inventory Management System
- *
- * ENCAPSULATION: Item keeps its fields private (see Item.java).
- * ABSTRACTION: Main only depends on the ItemRepository interface, never on
- * the concrete Inventory class - the storage implementation is fully
- * swappable without touching this file.
- *
- * All validation/business-rule failures surface as custom unchecked
- * exceptions (InvalidInputException, ItemNotFoundException,
- * DuplicateItemException, CategoryNotFoundException,
- * InsufficientItemsException - all defined in InputValidator.java). Main is
- * the only place that decides how to display them.
- */
+
 public class Main {
 
     private static final Scanner scanner = new Scanner(System.in);
@@ -266,14 +252,7 @@ public class Main {
         printTableHeader(true);
         for (Item item : lowStock) {
             System.out.println(item.toTableRowWithCategory());
-        }
-    }
-
-    // ---------------------------------------------------------------
-    // Input helpers - each retries until the user supplies something
-    // InputValidator accepts. A boolean flag drives every retry loop,
-    // never while(true).
-    // ---------------------------------------------------------------
+        }    }
 
     private static String readLine(String prompt) {
         System.out.print(prompt);
@@ -308,10 +287,6 @@ public class Main {
         return promptUntilValid(() -> InputValidator.parseConfirmation(readLine(prompt)));
     }
 
-    /**
-     * Reads a category name, reprompting on BOTH empty input and an
-     * unrecognized category name, until the user provides a valid one.
-     */
     private static Category readValidCategory(String prompt) {
         Category result = null;
         boolean valid = false;
@@ -328,11 +303,6 @@ public class Main {
         return result;
     }
 
-    /**
-     * Repeatedly calls the supplier, printing the error and retrying
-     * whenever it throws InvalidInputException, until a value comes back.
-     * Uses a boolean flag to control the loop instead of while(true).
-     */
     private static <T> T promptUntilValid(Supplier<T> supplier) {
         T result = null;
         boolean valid = false;

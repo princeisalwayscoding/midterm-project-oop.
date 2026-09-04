@@ -1,7 +1,4 @@
-/**
- * Thrown when a raw input fails format or bounds validation
- * (e.g. empty input, wrong number format, out-of-range value).
- */
+
 class InvalidInputException extends RuntimeException {
     public InvalidInputException(String message) {
         super(message);
@@ -36,19 +33,7 @@ class InsufficientItemsException extends RuntimeException {
     }
 }
 
-/**
- * Pure validation/parsing logic - takes a raw String, returns a parsed
- * value, or throws a custom exception describing exactly what was wrong.
- * Nothing in this class touches System.out or Scanner: it has no idea
- * it's being used by a console app, which means it could just as easily
- * back a GUI later on.
- *
- * Numeric parsing leans on Java's own Integer/Double parsing + try-catch
- * for bounds/overflow handling. The one thing try-catch alone cannot catch
- * is an invalid leading zero (Integer.parseInt("01") happily returns 1),
- * so a small manual character scan handles just that one shape check -
- * no regex needed anywhere in this class.
- */
+
 public class InputValidator {
 
     public static final int MIN_QUANTITY = 0;
@@ -114,7 +99,6 @@ public class InputValidator {
         }
     }
 
-    /** Decimal, strictly greater than 0.00, up to 1,000,000.00, no leading zeroes. */
     public static double parsePrice(String raw) {
         String input = requireNonEmpty(raw, "Price");
         if (!isValidDecimalFormat(input)) {
@@ -170,7 +154,6 @@ public class InputValidator {
     // Manual format checks (no regex)
     // ---------------------------------------------------------------
 
-    /** True for "0" or any digit string with no leading zero (e.g. "0", "7", "450"). */
     private static boolean isValidIntegerFormat(String s) {
         if (s.isEmpty()) return false;
         for (char c : s.toCharArray()) {
@@ -179,14 +162,13 @@ public class InputValidator {
         return !(s.length() > 1 && s.charAt(0) == '0');
     }
 
-    /** Whole numbers (via isValidIntegerFormat) or "digits.digits" with a valid integer part. */
     private static boolean isValidDecimalFormat(String s) {
         if (s.isEmpty()) return false;
         int dotIndex = s.indexOf('.');
         if (dotIndex == -1) {
             return isValidIntegerFormat(s);
         }
-        if (s.indexOf('.', dotIndex + 1) != -1) return false; // more than one dot
+        if (s.indexOf('.', dotIndex + 1) != -1) return false; 
         String integerPart = s.substring(0, dotIndex);
         String fractionalPart = s.substring(dotIndex + 1);
         if (fractionalPart.isEmpty() || !isValidIntegerFormat(integerPart)) return false;

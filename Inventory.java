@@ -2,12 +2,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * ABSTRACTION layer for item storage. Main only ever talks to this
- * interface, never to Inventory directly. This makes it possible to swap
- * the in-memory ArrayList implementation (Inventory) for something else
- * (a database, a CSV/JSON file, etc.) without changing Main at all.
- */
+
 interface ItemRepository {
 
     boolean isEmpty();
@@ -38,12 +33,6 @@ interface ItemRepository {
     List<Item> getSortedItems(String sortBy, boolean ascending);
 }
 
-/**
- * In-memory implementation of ItemRepository, backed by an ArrayList.
- * Business-rule failures (not found / duplicate / not enough items) are
- * reported by throwing the relevant custom exception instead of printing
- * anything - that decision is left entirely to the caller (Main).
- */
 public class Inventory implements ItemRepository {
 
     private final List<Item> items = new ArrayList<>();
